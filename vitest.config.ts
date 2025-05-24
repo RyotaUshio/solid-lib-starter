@@ -20,20 +20,17 @@ export default defineConfig(({ mode }) => {
       isolate: !testSSR,
       env: {
         NODE_ENV: testSSR ? 'production' : 'development',
-        DEV: testSSR ? '' : '1',
-        SSR: testSSR ? '1' : '',
-        PROD: testSSR ? '1' : '',
       },
       environment: testSSR ? 'node' : 'jsdom',
-      transformMode: { web: [/\.[jt]sx$/] },
+      testTransformMode: { web: ['**/*.{tsx,jsx}'], },
       ...(testSSR
         ? {
-            include: ['test/server.test.{ts,tsx}'],
-          }
+          include: ['test/server.test.{ts,tsx}'],
+        }
         : {
-            include: ['test/*.test.{ts,tsx}'],
-            exclude: ['test/server.test.{ts,tsx}'],
-          }),
+          include: ['test/*.test.{ts,tsx}'],
+          exclude: ['test/server.test.{ts,tsx}'],
+        }),
     },
     resolve: {
       conditions: testSSR ? ['node'] : ['browser', 'development'],
